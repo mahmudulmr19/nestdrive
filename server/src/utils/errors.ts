@@ -61,7 +61,6 @@ export function fromZodError(error: z.ZodError): ErrorResponse {
 
 // biome-ignore lint/suspicious/noExplicitAny: any error can be passed
 export function handleApiError(error: any): ErrorResponse & { status: number } {
-  console.error(error.message);
 
   // Zod errors
   if (error instanceof z.ZodError) {

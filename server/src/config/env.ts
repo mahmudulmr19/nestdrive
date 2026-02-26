@@ -7,6 +7,8 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(["development", "production", "test"])
       .default("development"),
+    /** Comma-separated origins for CORS, or "*" for development. Empty = same as "*". */
+    CORS_ORIGIN: z.string().optional(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
