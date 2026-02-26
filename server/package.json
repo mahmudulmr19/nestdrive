@@ -4,13 +4,25 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts"
+    "dev": "tsx watch ./src/server.ts"
   },
   "dependencies": {
-    "typescript": "5.9.2"
+    "@t3-oss/env-core": "^0.13.10",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "morgan": "^1.10.1",
+    "typescript": "5.9.2",
+    "winston": "^3.19.0",
+    "zod": "^4.3.6",
+    "zod-error": "^2.0.0"
   },
   "devDependencies": {
     "@nestdrive/tsconfig": "workspace:*",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/morgan": "^1.9.10",
     "@types/node": "^22",
     "tsx": "^4.21.0"
   }

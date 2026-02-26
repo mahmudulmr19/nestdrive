@@ -1,10 +1,10 @@
 {
-"extends": "@nestdrive/tsconfig/base.json",
+  "extends": "@nestdrive/tsconfig/base.json",
   "compilerOptions": {
     "lib": ["es2022"],
-    "paths": {
-      "~/*": ["./src/*"]
-    }
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "paths": { "~/*": ["./src/*"] }
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["node_modules", "dist"]
