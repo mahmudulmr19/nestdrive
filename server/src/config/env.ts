@@ -9,6 +9,7 @@ export const env = createEnv({
       .default("development"),
     /** Comma-separated origins for CORS, or "*" for development. Empty = same as "*". */
     CORS_ORIGIN: z.string().optional(),
+    DATABASE_URL: z.string(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
