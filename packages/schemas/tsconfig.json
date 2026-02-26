@@ -1,0 +1,4 @@
+{
+  "extends": "@nestdrive/tsconfig/base.json",
+  "compilerOptions": {}
+}

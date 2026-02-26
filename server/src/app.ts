@@ -11,6 +11,7 @@ import {
   requestIdMiddleware,
 } from "~/middleware";
 import { getCorsOrigin } from "~/utils/cors";
+import { authRoutes } from "./modules/auth/auth.routes";
 
 export async function createApp(): Promise<express.Application> {
   const app = express();
@@ -24,6 +25,7 @@ export async function createApp(): Promise<express.Application> {
   app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
 
   app.use("/health", (_req, res) => res.json({ status: "ok" }));
+  app.use("/v1/auth", authRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);
