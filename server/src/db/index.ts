@@ -5,9 +5,6 @@ import { env } from "~/config/env";
 const adapter = new PrismaPg({ connectionString: env.DATABASE_URL });
 const prisma = new PrismaClient({
   adapter,
-  omit: {
-    user: { passwordHash: true },
-  },
 });
 
 export { prisma };

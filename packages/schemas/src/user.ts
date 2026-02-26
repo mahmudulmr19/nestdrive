@@ -26,5 +26,11 @@ export const UserCreateSchema = UserSchema.pick({
     .max(32, "Password must be at most 32 characters long"),
 });
 
+export const UserLoginSchema = UserCreateSchema.pick({
+  email: true,
+  password: true,
+});
+
 export type UserCreateInput = z.infer<typeof UserCreateSchema>;
+export type UserLoginInput = z.infer<typeof UserLoginSchema>;
 export type User = z.infer<typeof UserSchema>;
