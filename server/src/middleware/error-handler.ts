@@ -16,12 +16,12 @@ export const errorHandler: ErrorRequestHandler = (
   const { error, status } = handleApiError(err);
   const requestId = req.requestId;
 
-  logger.error("Request error", {
+  logger.error(`Http request error: ${err.message}`, {
+    err,
+    body: req.body,
+    method: req.method,
     requestId,
-    status,
-    code: error.code,
-    message: error.message,
-    err: err.message,
+    url: req.url,
   });
 
   res.status(status).json({ error, ...(requestId && { requestId }) });

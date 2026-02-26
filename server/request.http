@@ -1,0 +1,9 @@
+# Register a new user
+POST http://localhost:8080/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "John Doe",
+  "email": "john.doe@example.com",
+  "password": "password"
+}

@@ -1,4 +1,4 @@
-import { z } from "zod";
+import * as z from "zod/v4";
 
 export const Role = z.enum(["ADMIN", "USER"]);
 
@@ -25,3 +25,6 @@ export const UserCreateSchema = UserSchema.pick({
     .min(8, "Password must be at least 8 characters long")
     .max(32, "Password must be at most 32 characters long"),
 });
+
+export type UserCreateInput = z.infer<typeof UserCreateSchema>;
+export type User = z.infer<typeof UserSchema>;

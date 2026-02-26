@@ -1,10 +1,10 @@
 import * as z from "zod/v4";
 import { generateErrorMessage } from "zod-error";
-import { ErrorCode, ErrorCodes } from "./error-codes";
+import { ErrorCodeSchema, ErrorCodes, type ErrorCode } from "./error-codes";
 
 const ErrorSchema = z.object({
   error: z.object({
-    code: ErrorCode.meta({
+    code: ErrorCodeSchema.meta({
       description: "A short code indicating the error code returned.",
       example: "not_found",
     }),
@@ -18,13 +18,13 @@ const ErrorSchema = z.object({
 export type ErrorResponse = z.infer<typeof ErrorSchema>;
 
 export class ApiError extends Error {
-  public readonly code: z.infer<typeof ErrorCode>;
+  public readonly code: ErrorCode;
 
   constructor({
     code,
     message,
   }: {
-    code: z.infer<typeof ErrorCode>;
+    code: ErrorCode;
     message: string;
   }) {
     super(message);
@@ -77,7 +77,7 @@ export function handleApiError(error: any): ErrorResponse & { status: number } {
         code: error.code,
         message: error.message,
       },
-      status: ErrorCodes[error.code as keyof typeof ErrorCodes],
+      status: ErrorCodes[error.code],
     };
   }
 

@@ -14,8 +14,9 @@ export const ErrorCodes = {
   internal_server_error: 500,
 } as const;
 
-export const ErrorCode = z.enum(
-  Object.keys(ErrorCodes) as [string, ...string[]],
-);
+/** Union of valid API error codes – use for typed suggestions when throwing ApiError */
+export type ErrorCode = keyof typeof ErrorCodes;
 
-export type ErrorCode = z.infer<typeof ErrorCode>;
+const errorCodeKeys = Object.keys(ErrorCodes) as [ErrorCode, ...ErrorCode[]];
+
+export const ErrorCodeSchema = z.enum(errorCodeKeys);
