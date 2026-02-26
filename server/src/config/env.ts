@@ -10,6 +10,7 @@ export const env = createEnv({
     /** Comma-separated origins for CORS, or "*" for development. Empty = same as "*". */
     CORS_ORIGIN: z.string().optional(),
     DATABASE_URL: z.string(),
+    JWT_SECRET: z.string(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

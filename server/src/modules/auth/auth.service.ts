@@ -3,6 +3,7 @@ import { UserCreateInput, UserLoginInput } from "@nestdrive/schemas/user";
 import { createId } from "~/utils/create-id";
 import bcrypt from "bcrypt";
 import { ApiError } from "~/utils/errors";
+import { authUtils } from "~/utils/auth";
 
 const SALT_ROUNDS = 10;
 
@@ -52,6 +53,15 @@ const authenticateUser = async (data: UserLoginInput) => {
       message: "Invalid email or password",
     });
   }
+
+  const accessToken = authUtils.generateAccessToken({
+    userId: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  });
+
+  return { accessToken };
 };
 
 export const authService = {

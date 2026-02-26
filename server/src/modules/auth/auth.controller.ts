@@ -10,10 +10,9 @@ const registerUser = async (req: Request, res: Response) => {
 
 const loginUser = async (req: Request, res: Response) => {
   const body = UserLoginSchema.parse(req.body);
-  // TODO: implement
-  await authService.authenticateUser(body);
+  const result = await authService.authenticateUser(body);
 
-  return res.status(200).end();
+  return res.status(200).json(result);
 };
 
 export const authController = {
