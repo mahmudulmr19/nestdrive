@@ -1,0 +1,17 @@
+{
+  "name": "@nestdrive/server",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "typescript": "5.9.2"
+  },
+  "devDependencies": {
+    "@nestdrive/tsconfig": "workspace:*",
+    "@types/node": "^22",
+    "tsx": "^4.21.0"
+  }
+}

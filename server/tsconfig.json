@@ -1,0 +1,11 @@
+{
+"extends": "@nestdrive/tsconfig/base.json",
+  "compilerOptions": {
+    "lib": ["es2022"],
+    "paths": {
+      "~/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
