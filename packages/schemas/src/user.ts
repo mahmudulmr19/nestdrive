@@ -31,6 +31,11 @@ export const LoginUserSchema = CreateUserSchema.pick({
   password: true,
 });
 
+export const ForgotPasswordSchema = CreateUserSchema.pick({
+  email: true,
+});
+
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type LoginUserInput = z.infer<typeof LoginUserSchema>;
+export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 export type User = z.infer<typeof UserSchema>;
