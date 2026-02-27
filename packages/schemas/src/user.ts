@@ -15,7 +15,7 @@ export const UserSchema = z
   })
   .meta({ id: "User" });
 
-export const UserCreateSchema = UserSchema.pick({
+export const CreateUserSchema = UserSchema.pick({
   name: true,
   email: true,
 }).extend({
@@ -26,11 +26,11 @@ export const UserCreateSchema = UserSchema.pick({
     .max(32, "Password must be at most 32 characters long"),
 });
 
-export const UserLoginSchema = UserCreateSchema.pick({
+export const LoginUserSchema = CreateUserSchema.pick({
   email: true,
   password: true,
 });
 
-export type UserCreateInput = z.infer<typeof UserCreateSchema>;
-export type UserLoginInput = z.infer<typeof UserLoginSchema>;
+export type CreateUserInput = z.infer<typeof CreateUserSchema>;
+export type LoginUserInput = z.infer<typeof LoginUserSchema>;
 export type User = z.infer<typeof UserSchema>;
