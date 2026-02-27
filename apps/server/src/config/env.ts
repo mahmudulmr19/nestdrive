@@ -11,7 +11,13 @@ export const env = createEnv({
     CORS_ORIGIN: z.string().optional(),
     DATABASE_URL: z.string(),
     JWT_SECRET: z.string(),
+    RESEND_API_KEY: z.string().startsWith("re_"),
+    RESEND_FROM_EMAIL: z.email(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
+  onValidationError: (error) => {
+    console.error("❌ Invalid environment variables:", error);
+    process.exit(1);
+  },
 });

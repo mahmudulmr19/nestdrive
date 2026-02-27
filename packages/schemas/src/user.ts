@@ -31,11 +31,23 @@ export const LoginUserSchema = CreateUserSchema.pick({
   password: true,
 });
 
+export const VerifyEmailSchema = z.object({
+  token: z.string().min(1, "Verification token is required"),
+});
+
+export const SendVerificationEmailSchema = z.object({
+  email: z.email(),
+});
+
 export const ForgotPasswordSchema = CreateUserSchema.pick({
   email: true,
 });
 
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type LoginUserInput = z.infer<typeof LoginUserSchema>;
+export type VerifyEmailInput = z.infer<typeof VerifyEmailSchema>;
+export type SendVerificationEmailInput = z.infer<
+  typeof SendVerificationEmailSchema
+>;
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
 export type User = z.infer<typeof UserSchema>;
