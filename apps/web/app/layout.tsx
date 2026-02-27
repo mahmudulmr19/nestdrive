@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import "./globals.css";
+import "@nestdrive/ui/styles.css";
 
 const fontSans = Inter({
   subsets: ["latin"],
