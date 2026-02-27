@@ -4,4 +4,7 @@ packages:
   - server
 
 onlyBuiltDependencies:
+  - '@prisma/engines'
+  - bcrypt
   - esbuild
+  - prisma
