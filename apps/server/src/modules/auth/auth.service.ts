@@ -33,9 +33,6 @@ const createUser = async (data: CreateUserInput) => {
       email: data.email,
       passwordHash,
     },
-    omit: {
-      passwordHash: true,
-    },
   });
 
   try {
@@ -61,7 +58,13 @@ const createUser = async (data: CreateUserInput) => {
     logger.error("Failed to create email verification token:", error);
   }
 
-  return newUser;
+  const accessToken = authUtils.generateAccessToken({
+    userId: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+    role: newUser.role,
+  });
+  return { accessToken };
 };
 
 const authenticateUser = async (data: LoginUserInput) => {
