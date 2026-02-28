@@ -12,7 +12,7 @@ export const env = createEnv({
     DATABASE_URL: z.string(),
     JWT_SECRET: z.string(),
     RESEND_API_KEY: z.string().startsWith("re_"),
-    RESEND_FROM_EMAIL: z.email(),
+    SERVER_URL: z.url(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
