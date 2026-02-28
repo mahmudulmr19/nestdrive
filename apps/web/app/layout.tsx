@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "@nestdrive/ui/styles.css";
+import { Providers } from "~/components/providers";
 
 const fontSans = Inter({
   subsets: ["latin"],
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={fontSans.className}>{children}</body>
+      <body className={fontSans.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
