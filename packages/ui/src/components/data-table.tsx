@@ -17,7 +17,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-  cn
+  cn,
 } from "@nestdrive/ui";
 import {
   AlertCircle,

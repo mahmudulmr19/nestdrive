@@ -2,11 +2,13 @@ import { Router } from "express";
 import { authenticate } from "~/middleware/authenticate";
 import { authorize } from "~/middleware/authorize";
 import { packagesController } from "./packages.controller";
+import { statsController } from "./stats.controller";
 
 export const adminRoutes: Router = Router();
 
 adminRoutes.use(authenticate, authorize("ADMIN"));
 
+adminRoutes.get("/stats", statsController.getStats);
 adminRoutes.get("/packages", packagesController.listPackages);
 adminRoutes.get("/packages/:id", packagesController.getPackage);
 adminRoutes.post("/packages", packagesController.createPackage);

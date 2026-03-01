@@ -4,7 +4,8 @@
   "type": "module",
   "exports": {
     "./user": "./src/user.ts",
-    "./subscription-package": "./src/subscription-package.ts"
+    "./subscription-package": "./src/subscription-package.ts",
+    "./admin-stats": "./src/admin-stats.ts"
   },
   "private": true,
   "dependencies": {

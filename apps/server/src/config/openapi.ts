@@ -11,6 +11,7 @@ import {
   SubscriptionPackageSchema,
   UpdateSubscriptionPackageSchema,
 } from "@nestdrive/schemas/subscription-package";
+import { AdminStatsSchema } from "@nestdrive/schemas/admin-stats";
 import { jsonResponse, requestBody } from "~/utils/openapi";
 import {
   openApiErrorResponses,
@@ -78,6 +79,17 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           responses: {
             ...openApiErrorResponses,
             200: jsonResponse(UserSchema, "Current user data"),
+          },
+        },
+      },
+      "/v1/admin/stats": {
+        get: {
+          tags: ["Admin"],
+          summary: "Get admin dashboard stats",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(AdminStatsSchema, "Admin dashboard statistics"),
           },
         },
       },
@@ -181,6 +193,7 @@ export const openApiDocument: ReturnType<typeof createDocument> =
         SubscriptionPackageSchema,
         CreateSubscriptionPackageSchema,
         UpdateSubscriptionPackageSchema,
+        AdminStatsSchema,
       },
       securitySchemes: {
         token: {

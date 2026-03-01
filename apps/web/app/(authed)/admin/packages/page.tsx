@@ -74,7 +74,9 @@ const columns = (
 
 export default function PackagesPage() {
   const [formOpen, setFormOpen] = useState(false);
-  const [editPackage, setEditPackage] = useState<SubscriptionPackage | undefined>();
+  const [editPackage, setEditPackage] = useState<
+    SubscriptionPackage | undefined
+  >();
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = api.useQuery("get", "/v1/admin/packages");
@@ -84,7 +86,9 @@ export default function PackagesPage() {
     "/v1/admin/packages/{id}",
     {
       onSuccess() {
-        queryClient.invalidateQueries({ queryKey: ["get", "/v1/admin/packages"] });
+        queryClient.invalidateQueries({
+          queryKey: ["get", "/v1/admin/packages"],
+        });
         toast.success("Package deleted");
       },
       onError(err) {

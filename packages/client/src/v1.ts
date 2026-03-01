@@ -158,6 +158,51 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/admin/stats": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get admin dashboard stats */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Admin dashboard statistics */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["AdminStats"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/admin/packages": {
     parameters: {
       query?: never;
@@ -401,6 +446,15 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    AdminStats: {
+      totalUsers: number;
+      verifiedUsers: number;
+      totalPackages: number;
+      dailySignups: {
+        date: string;
+        count: number;
+      }[];
     };
   };
   responses: {
