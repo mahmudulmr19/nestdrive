@@ -1,32 +1,29 @@
 import * as z from "zod/v4";
 import { generateErrorMessage } from "zod-error";
 import { ErrorCodeSchema, ErrorCodes, type ErrorCode } from "./error-codes";
+import { ZodOpenApiResponseObject } from "zod-openapi";
 
-const ErrorSchema = z.object({
-  error: z.object({
-    code: ErrorCodeSchema.meta({
-      description: "A short code indicating the error code returned.",
-      example: "not_found",
+export const ErrorResponseSchema = z
+  .object({
+    error: z.object({
+      code: ErrorCodeSchema.meta({
+        description: "A short code indicating the error code returned.",
+        example: "not_found",
+      }),
+      message: z.string().meta({
+        description: "A human readable error message.",
+        example: "The requested resource was not found.",
+      }),
     }),
-    message: z.string().meta({
-      description: "A human readable error message.",
-      example: "The requested resource was not found.",
-    }),
-  }),
-});
+  })
+  .meta({ id: "ErrorResponse" });
 
-export type ErrorResponse = z.infer<typeof ErrorSchema>;
+export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
 
 export class ApiError extends Error {
   public readonly code: ErrorCode;
 
-  constructor({
-    code,
-    message,
-  }: {
-    code: ErrorCode;
-    message: string;
-  }) {
+  constructor({ code, message }: { code: ErrorCode; message: string }) {
     super(message);
     this.code = code;
   }
@@ -61,7 +58,6 @@ export function fromZodError(error: z.ZodError): ErrorResponse {
 
 // biome-ignore lint/suspicious/noExplicitAny: any error can be passed
 export function handleApiError(error: any): ErrorResponse & { status: number } {
-
   // Zod errors
   if (error instanceof z.ZodError) {
     return {
@@ -106,3 +102,41 @@ export function handleApiError(error: any): ErrorResponse & { status: number } {
     status: 500,
   };
 }
+
+export const errorSchemaFactory = (
+  code: ErrorCode,
+  description: string,
+): ZodOpenApiResponseObject => {
+  return {
+    description,
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: {
+            error: {
+              type: "object",
+              properties: {
+                code: {
+                  type: "string",
+                  enum: [code],
+                  description:
+                    "A short code indicating the error code returned.",
+                  example: code,
+                },
+                message: {
+                  type: "string",
+                  description:
+                    "A human readable explanation of what went wrong.",
+                  example: "The requested resource was not found.",
+                },
+              },
+              required: ["code", "message"],
+            },
+          },
+          required: ["error"],
+        },
+      },
+    },
+  };
+};

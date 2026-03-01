@@ -1,5 +1,10 @@
 import { prisma } from "~/db";
-import type { CreateUserInput, LoginUserInput } from "@nestdrive/schemas/user";
+import {
+  AuthTokenSchema,
+  type AuthToken,
+  type CreateUserInput,
+  type LoginUserInput,
+} from "@nestdrive/schemas/user";
 import { createId } from "~/utils/create-id";
 import bcrypt from "bcrypt";
 import { ApiError } from "~/utils/errors";
@@ -16,7 +21,7 @@ const getUserByEmail = async (email: string) => {
   return prisma.user.findUnique({ where: { email } });
 };
 
-const createUser = async (data: CreateUserInput) => {
+const createUser = async (data: CreateUserInput): Promise<AuthToken> => {
   const existingUser = await getUserByEmail(data.email);
   if (existingUser) {
     throw new ApiError({
@@ -64,10 +69,10 @@ const createUser = async (data: CreateUserInput) => {
     email: newUser.email,
     role: newUser.role,
   });
-  return { accessToken };
+  return AuthTokenSchema.parse({ accessToken });
 };
 
-const authenticateUser = async (data: LoginUserInput) => {
+const authenticateUser = async (data: LoginUserInput): Promise<AuthToken> => {
   const user = await getUserByEmail(data.email);
   if (!user) {
     throw new ApiError({
@@ -93,7 +98,7 @@ const authenticateUser = async (data: LoginUserInput) => {
     role: user.role,
   });
 
-  return { accessToken };
+  return AuthTokenSchema.parse({ accessToken });
 };
 
 export const authService = {

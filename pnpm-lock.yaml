@@ -29,6 +29,9 @@ importers:
       '@prisma/client':
         specifier: ^7.4.1
         version: 7.4.1(prisma@7.4.1(@types/react@19.2.14)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.2))(typescript@5.9.2)
+      '@scalar/express-api-reference':
+        specifier: ^0.8.46
+        version: 0.8.46
       '@t3-oss/env-core':
         specifier: ^0.13.10
         version: 0.13.10(typescript@5.9.2)(valibot@1.2.0(typescript@5.9.2))(zod@4.3.6)
@@ -74,6 +77,9 @@ importers:
       zod-error:
         specifier: 2.0.0
         version: 2.0.0(zod@4.3.6)
+      zod-openapi:
+        specifier: ^5.4.6
+        version: 5.4.6(zod@4.3.6)
     devDependencies:
       '@nestdrive/tsconfig':
         specifier: workspace:*
@@ -1459,6 +1465,22 @@ packages:
   '@radix-ui/rect@1.1.1':
     resolution: {integrity: sha512-HPwpGIzkl28mWyZqG52jiqDJ12waP11Pa1lGoiyUkIEuMLBP0oeK/C89esbXrxsky5we7dfd8U58nm0SgAWpVw==}
 
+  '@scalar/core@0.3.43':
+    resolution: {integrity: sha512-id97ufmbFPXCGKLizx0pATqeVm0hJk6WVLX1IUPYZJBTvo4Bq4u/hUGeWZtdn+Drgc11zMkGHL3LADulgFFyNA==}
+    engines: {node: '>=20'}
+
+  '@scalar/express-api-reference@0.8.46':
+    resolution: {integrity: sha512-VSbU0jQ4D3Pj8024Qd9Xrpeegvq3S1F6AEcP8ayrJrU1PbDWejemajDfIJtZXJVALp3Zv8Q+Mka5ACU4HQ/NwQ==}
+    engines: {node: '>=20'}
+
+  '@scalar/helpers@0.2.16':
+    resolution: {integrity: sha512-JlDUKdmwAHdcFUdTngNtx/uhLKTBACXlgvri7iKb6Jx6ImRIBgHwxZNAqlil1L047+QBrKh97lnezNpzNQAffQ==}
+    engines: {node: '>=20'}
+
+  '@scalar/types@0.6.8':
+    resolution: {integrity: sha512-24AwoTKOggB+VNY65yIuSXwE5/kwjplqrx4v+VYuRBtIMVt3I+Ppaz45Xk3QoDirNCGtraNRpAbfArLRlFcP/w==}
+    engines: {node: '>=20'}
+
   '@so-ric/colorspace@1.1.6':
     resolution: {integrity: sha512-/KiKkpHNOBgkFJwu9sh48LkHSMYGyuTcSFK/qMBdnOAlrRJzRSXAOFB5qwzaVQuDl8wAvHVMkaASQDReTahxuw==}
 
@@ -2404,6 +2426,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@5.1.6:
+    resolution: {integrity: sha512-c7+7RQ+dMB5dPwwCp4ee1/iV/q2P6aK1mTZcfr1BTuVlyW9hJYiMPybJCcnBlQtuSmTIWNeazm/zqNoZSSElBg==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
 
@@ -2864,6 +2891,10 @@ packages:
   svix@1.84.1:
     resolution: {integrity: sha512-K8DPPSZaW/XqXiz1kEyzSHYgmGLnhB43nQCMeKjWGCUpLIpAMMM8kx3rVVOSm6Bo6EHyK1RQLPT4R06skM/MlQ==}
 
+  tagged-tag@1.0.0:
+    resolution: {integrity: sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==}
+    engines: {node: '>=20'}
+
   tailwind-merge@3.5.0:
     resolution: {integrity: sha512-I8K9wewnVDkL1NTGoqWmVEIlUcB9gFriAEkXkfCjX5ib8ezGxtR3xD7iZIxrfArjEsH7F1CHD4RFUtxefdqV/A==}
 
@@ -2937,6 +2968,10 @@ packages:
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
+
+  type-fest@5.4.4:
+    resolution: {integrity: sha512-JnTrzGu+zPV3aXIUhnyWJj4z/wigMsdYajGLIYakqyOW1nPllzXEJee0QQbHj+CTIQtXGlAjuK0UY+2xTyjVAw==}
+    engines: {node: '>=20'}
 
   type-is@2.0.1:
     resolution: {integrity: sha512-OZs6gsjF4vMp32qrCbiVSkrFmXtG/AZhY3t0iAMrMBiAZyV9oALtXO8hsrHbMXF9x6L3grlFuwW2oAz7cav+Gw==}
@@ -3036,6 +3071,12 @@ packages:
     resolution: {integrity: sha512-ivSoPm7h5SEGG8GUvQ7YTwrnEx36qNmUIU5hSIGcqcdl7+ZFoTrYXAdQEs3KP/rkihrrR9REEdOeGU+fWdMoNw==}
     peerDependencies:
       zod: ^4.0.0
+
+  zod-openapi@5.4.6:
+    resolution: {integrity: sha512-P2jsOOBAq/6hCwUsMCjUATZ8szkMsV5VAwZENfyxp2Hc/XPJQpVwAgevWZc65xZauCwWB9LAn7zYeiCJFAEL+A==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      zod: ^3.25.74 || ^4.0.0
 
   zod@4.3.6:
     resolution: {integrity: sha512-rftlrkhHZOcjDwkGlnUtZZkvaPHCsDATp4pGpuOOMDaTdDDXF91wuVDJoWoPsKX/3YPQ5fHuF3STjcYyKr+Qhg==}
@@ -4224,6 +4265,23 @@ snapshots:
 
   '@radix-ui/rect@1.1.1': {}
 
+  '@scalar/core@0.3.43':
+    dependencies:
+      '@scalar/types': 0.6.8
+
+  '@scalar/express-api-reference@0.8.46':
+    dependencies:
+      '@scalar/core': 0.3.43
+
+  '@scalar/helpers@0.2.16': {}
+
+  '@scalar/types@0.6.8':
+    dependencies:
+      '@scalar/helpers': 0.2.16
+      nanoid: 5.1.6
+      type-fest: 5.4.4
+      zod: 4.3.6
+
   '@so-ric/colorspace@1.1.6':
     dependencies:
       color: 5.0.3
@@ -5164,6 +5222,8 @@ snapshots:
 
   nanoid@3.3.11: {}
 
+  nanoid@5.1.6: {}
+
   natural-compare@1.4.0: {}
 
   negotiator@1.0.0: {}
@@ -5672,6 +5732,8 @@ snapshots:
       standardwebhooks: 1.0.0
       uuid: 10.0.0
 
+  tagged-tag@1.0.0: {}
+
   tailwind-merge@3.5.0: {}
 
   tailwindcss@4.2.1: {}
@@ -5727,6 +5789,10 @@ snapshots:
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
+
+  type-fest@5.4.4:
+    dependencies:
+      tagged-tag: 1.0.0
 
   type-is@2.0.1:
     dependencies:
@@ -5811,6 +5877,10 @@ snapshots:
       graphmatch: 1.1.1
 
   zod-error@2.0.0(zod@4.3.6):
+    dependencies:
+      zod: 4.3.6
+
+  zod-openapi@5.4.6(zod@4.3.6):
     dependencies:
       zod: 4.3.6
 

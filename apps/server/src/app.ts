@@ -12,6 +12,8 @@ import {
 } from "~/middleware";
 import { getCorsOrigin } from "~/utils/cors";
 import { authRoutes } from "./modules/auth/auth.routes";
+import { openApiDocument } from "./config/openapi";
+import { apiReference } from "@scalar/express-api-reference";
 
 export async function createApp(): Promise<express.Application> {
   const app = express();
@@ -24,7 +26,33 @@ export async function createApp(): Promise<express.Application> {
   app.use(requestIdMiddleware);
   app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
 
-  app.use("/health", (_req, res) => res.json({ status: "ok" }));
+  app.use("/health", (_, res) => res.json({ status: "ok" }));
+  app.use(
+    "/docs",
+    helmet({
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: {
+          "script-src": [
+            "'self'",
+            "'unsafe-inline'",
+            "https://cdn.jsdelivr.net",
+          ],
+          "style-src": [
+            "'self'",
+            "'unsafe-inline'",
+            "https://cdn.jsdelivr.net",
+          ],
+          "connect-src": ["'self'", "https://cdn.jsdelivr.net"],
+        },
+      },
+    }),
+    apiReference({
+      content: JSON.stringify(openApiDocument),
+      theme: "alternate",
+    }),
+  );
+
   app.use("/v1/auth", authRoutes);
 
   app.use(notFoundHandler);

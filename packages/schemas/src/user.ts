@@ -31,6 +31,12 @@ export const LoginUserSchema = CreateUserSchema.pick({
   password: true,
 });
 
+export const AuthTokenSchema = z
+  .object({
+    accessToken: z.string().min(1),
+  })
+  .meta({ id: "AuthTokenResponse" });
+
 export const VerifyEmailSchema = z.object({
   token: z.string().min(1, "Verification token is required"),
 });
@@ -45,6 +51,7 @@ export const ForgotPasswordSchema = CreateUserSchema.pick({
 
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type LoginUserInput = z.infer<typeof LoginUserSchema>;
+export type AuthToken = z.infer<typeof AuthTokenSchema>;
 export type VerifyEmailInput = z.infer<typeof VerifyEmailSchema>;
 export type SendVerificationEmailInput = z.infer<
   typeof SendVerificationEmailSchema
