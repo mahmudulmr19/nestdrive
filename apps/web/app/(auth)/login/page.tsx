@@ -6,17 +6,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginUserSchema } from "@nestdrive/schemas/user";
 import Link from "next/link";
 import { api } from "~/lib/api";
+import { useAuth } from "~/lib/auth";
 import { toast } from "sonner";
 
 export default function LoginPage() {
+  const { signIn } = useAuth();
+
   const { mutate, isPending } = api.useMutation("post", "/v1/auth/login", {
     onError(error) {
       toast.error(error.error.message);
     },
     onSuccess(data) {
-      localStorage.setItem("token", data.accessToken);
+      signIn(data.accessToken);
       toast.success("Logged in successfully");
-      window.location.href = "/";
     },
   });
 
