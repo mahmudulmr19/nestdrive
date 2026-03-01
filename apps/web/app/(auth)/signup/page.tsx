@@ -5,8 +5,21 @@ import { CreateUserSchema } from "@nestdrive/schemas/user";
 import { Button, Field, FieldError, FieldLabel, Input } from "@nestdrive/ui";
 import { Controller, useForm } from "react-hook-form";
 import { AuthWrapper } from "~/components/auth";
+import { api } from "~/lib/api";
+import { toast } from "sonner";
 
 export default function SignupPage() {
+  const { mutate, isPending } = api.useMutation("post", "/v1/auth/register", {
+    onError(error) {
+      toast.error(error.error.message);
+    },
+    onSuccess(data) {
+      localStorage.setItem("token", data.accessToken);
+      toast.success("Account created successfully");
+      window.location.href = "/";
+    },
+  });
+
   const form = useForm({
     resolver: zodResolver(CreateUserSchema),
     defaultValues: {
@@ -26,7 +39,7 @@ export default function SignupPage() {
     >
       <form
         className="space-y-4"
-        onSubmit={form.handleSubmit((value) => console.log(value))}
+        onSubmit={form.handleSubmit((value) => mutate({ body: value }))}
       >
         <Controller
           name="name"
@@ -81,7 +94,7 @@ export default function SignupPage() {
           )}
         />
 
-        <Button type="submit" className="h-10 w-full">
+        <Button type="submit" className="h-10 w-full" isLoading={isPending}>
           Create account
         </Button>
       </form>

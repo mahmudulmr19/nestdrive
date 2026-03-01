@@ -12,17 +12,21 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
+    "@nestdrive/client": "workspace:*",
     "@nestdrive/schemas": "workspace:*",
     "@nestdrive/ui": "workspace:*",
+    "@t3-oss/env-nextjs": "^0.13.10",
     "@tailwindcss/postcss": "^4.2.1",
     "@tanstack/react-query": "^5.90.21",
-    "goey-toast": "^0.2.2",
     "next": "16.1.6",
+    "openapi-react-query": "^0.5.4",
     "postcss": "^8.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",
-    "tailwindcss": "^4.2.1"
+    "sonner": "^2.0.7",
+    "tailwindcss": "^4.2.1",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@nestdrive/tsconfig": "workspace:*",

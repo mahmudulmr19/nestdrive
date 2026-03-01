@@ -42,6 +42,15 @@ export interface paths {
             "application/json": components["schemas"]["AuthTokenResponse"];
           };
         };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
       };
     };
     delete?: never;
@@ -87,8 +96,62 @@ export interface paths {
             "application/json": components["schemas"]["AuthTokenResponse"];
           };
         };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
       };
     };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/users/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get current user */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Current user data */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["User"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;

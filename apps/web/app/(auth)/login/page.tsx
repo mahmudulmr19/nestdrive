@@ -5,8 +5,21 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginUserSchema } from "@nestdrive/schemas/user";
 import Link from "next/link";
+import { api } from "~/lib/api";
+import { toast } from "sonner";
 
 export default function LoginPage() {
+  const { mutate, isPending } = api.useMutation("post", "/v1/auth/login", {
+    onError(error) {
+      toast.error(error.error.message);
+    },
+    onSuccess(data) {
+      localStorage.setItem("token", data.accessToken);
+      toast.success("Logged in successfully");
+      window.location.href = "/";
+    },
+  });
+
   const form = useForm({
     resolver: zodResolver(LoginUserSchema),
     defaultValues: {
@@ -25,7 +38,7 @@ export default function LoginPage() {
     >
       <form
         className="space-y-4"
-        onSubmit={form.handleSubmit((value) => console.log(value))}
+        onSubmit={form.handleSubmit((value) => mutate({ body: value }))}
       >
         <Controller
           name="email"
@@ -54,6 +67,7 @@ export default function LoginPage() {
               <Input
                 {...field}
                 id={field.name}
+                type="password"
                 aria-invalid={fieldState.invalid}
                 placeholder="Enter your password"
                 autoComplete="off"
@@ -71,7 +85,7 @@ export default function LoginPage() {
           </Link>
         </div>
 
-        <Button type="submit" className="h-10 w-full">
+        <Button type="submit" className="h-10 w-full" isLoading={isPending}>
           Sign in
         </Button>
       </form>

@@ -7,7 +7,10 @@ import {
   UserSchema,
 } from "@nestdrive/schemas/user";
 import { jsonResponse, requestBody } from "~/utils/openapi";
-import { openApiErrorResponsesComponents } from "~/utils/openapi/responses";
+import {
+  openApiErrorResponses,
+  openApiErrorResponsesComponents,
+} from "~/utils/openapi/responses";
 
 export const openApiDocument: ReturnType<typeof createDocument> =
   createDocument({
@@ -29,6 +32,10 @@ export const openApiDocument: ReturnType<typeof createDocument> =
         description:
           "Endpoints related to user authentication and registration",
       },
+      {
+        name: "Users",
+        description: "Endpoints related to user management",
+      },
     ],
     paths: {
       "/v1/auth/register": {
@@ -37,6 +44,7 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           summary: "Register a new user",
           requestBody: requestBody(CreateUserSchema, "User registration data"),
           responses: {
+            ...openApiErrorResponses,
             201: jsonResponse(AuthTokenSchema, "User registered successfully"),
           },
         },
@@ -47,7 +55,19 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           summary: "Login a user",
           requestBody: requestBody(LoginUserSchema, "User login data"),
           responses: {
+            ...openApiErrorResponses,
             200: jsonResponse(AuthTokenSchema, "User logged in successfully"),
+          },
+        },
+      },
+      "/v1/users/me": {
+        get: {
+          tags: ["Users"],
+          summary: "Get current user",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(UserSchema, "Current user data"),
           },
         },
       },
