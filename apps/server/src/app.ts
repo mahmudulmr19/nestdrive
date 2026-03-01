@@ -27,6 +27,7 @@ export async function createApp(): Promise<express.Application> {
   app.use(morgan(env.NODE_ENV === "production" ? "combined" : "dev"));
 
   app.use("/health", (_, res) => res.json({ status: "ok" }));
+  app.use("/openapi.json", (_, res) => res.json(openApiDocument));
   app.use(
     "/docs",
     helmet({

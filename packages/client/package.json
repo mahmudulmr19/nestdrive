@@ -1,0 +1,20 @@
+{
+  "name": "@nestdrive/client",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "openapi-typescript http://localhost:8080/openapi.json -o ./src/v1.ts && cd ../.. && bun format"
+  },
+  "devDependencies": {
+    "@nestdrive/tsconfig": "workspace:*",
+    "@types/node": "^22",
+    "openapi-typescript": "^7.10.1",
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "openapi-fetch": "^0.15.0"
+  }
+}
