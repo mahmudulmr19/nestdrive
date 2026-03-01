@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "type": "module",
   "exports": {
-    "./user": "./src/user.ts"
+    "./user": "./src/user.ts",
+    "./subscription-package": "./src/subscription-package.ts"
   },
   "private": true,
   "dependencies": {

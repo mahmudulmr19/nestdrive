@@ -7,6 +7,9 @@
     "postinstall": "prisma generate",
     "dev": "tsx watch ./src/server.ts"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@nestdrive/schemas": "workspace:*",
     "@prisma/adapter-pg": "^7.4.1",

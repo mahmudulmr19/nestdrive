@@ -6,11 +6,17 @@ import {
   LoginUserSchema,
   UserSchema,
 } from "@nestdrive/schemas/user";
+import {
+  CreateSubscriptionPackageSchema,
+  SubscriptionPackageSchema,
+  UpdateSubscriptionPackageSchema,
+} from "@nestdrive/schemas/subscription-package";
 import { jsonResponse, requestBody } from "~/utils/openapi";
 import {
   openApiErrorResponses,
   openApiErrorResponsesComponents,
 } from "~/utils/openapi/responses";
+import * as z from "zod/v4";
 
 export const openApiDocument: ReturnType<typeof createDocument> =
   createDocument({
@@ -35,6 +41,10 @@ export const openApiDocument: ReturnType<typeof createDocument> =
       {
         name: "Users",
         description: "Endpoints related to user management",
+      },
+      {
+        name: "Admin",
+        description: "Admin-only endpoints for managing subscription packages",
       },
     ],
     paths: {
@@ -71,10 +81,106 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           },
         },
       },
+      "/v1/admin/packages": {
+        get: {
+          tags: ["Admin"],
+          summary: "List all subscription packages",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(
+              z.array(SubscriptionPackageSchema),
+              "List of subscription packages",
+            ),
+          },
+        },
+        post: {
+          tags: ["Admin"],
+          summary: "Create a subscription package",
+          security: [{ token: [] }],
+          requestBody: requestBody(
+            CreateSubscriptionPackageSchema,
+            "Subscription package data",
+          ),
+          responses: {
+            ...openApiErrorResponses,
+            201: jsonResponse(
+              SubscriptionPackageSchema,
+              "Subscription package created",
+            ),
+          },
+        },
+      },
+      "/v1/admin/packages/{id}": {
+        get: {
+          tags: ["Admin"],
+          summary: "Get a subscription package",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(
+              SubscriptionPackageSchema,
+              "Subscription package data",
+            ),
+          },
+        },
+        put: {
+          tags: ["Admin"],
+          summary: "Update a subscription package",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          requestBody: requestBody(
+            UpdateSubscriptionPackageSchema,
+            "Subscription package update data",
+          ),
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(
+              SubscriptionPackageSchema,
+              "Subscription package updated",
+            ),
+          },
+        },
+        delete: {
+          tags: ["Admin"],
+          summary: "Delete a subscription package",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          responses: {
+            ...openApiErrorResponses,
+            204: { description: "Subscription package deleted" },
+          },
+        },
+      },
     },
     components: {
       schemas: {
         UserSchema,
+        SubscriptionPackageSchema,
+        CreateSubscriptionPackageSchema,
+        UpdateSubscriptionPackageSchema,
       },
       securitySchemes: {
         token: {

@@ -158,10 +158,219 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/admin/packages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all subscription packages */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description List of subscription packages */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["SubscriptionPackage"][];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    /** Create a subscription package */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description Subscription package data */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["CreateSubscriptionPackage"];
+        };
+      };
+      responses: {
+        /** @description Subscription package created */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["SubscriptionPackage"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/admin/packages/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get a subscription package */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Subscription package data */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["SubscriptionPackage"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    /** Update a subscription package */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      /** @description Subscription package update data */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["UpdateSubscriptionPackage"];
+        };
+      };
+      responses: {
+        /** @description Subscription package updated */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["SubscriptionPackage"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    post?: never;
+    /** Delete a subscription package */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Subscription package deleted */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    CreateSubscriptionPackage: {
+      name: string;
+      maxFolders: number;
+      maxNestingLevel: number;
+      allowedFileTypes: ("IMAGE" | "VIDEO" | "PDF" | "AUDIO")[];
+      maxFileSizeMb: number;
+      totalFileLimit: number;
+      filesPerFolder: number;
+    };
+    UpdateSubscriptionPackage: {
+      name?: string;
+      maxFolders?: number;
+      maxNestingLevel?: number;
+      allowedFileTypes?: ("IMAGE" | "VIDEO" | "PDF" | "AUDIO")[];
+      maxFileSizeMb?: number;
+      totalFileLimit?: number;
+      filesPerFolder?: number;
+    };
     AuthTokenResponse: {
       accessToken: string;
     };
@@ -174,6 +383,20 @@ export interface components {
       role: "ADMIN" | "USER";
       /** Format: date-time */
       emailVerified?: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    SubscriptionPackage: {
+      id: string;
+      name: string;
+      maxFolders: number;
+      maxNestingLevel: number;
+      allowedFileTypes: ("IMAGE" | "VIDEO" | "PDF" | "AUDIO")[];
+      maxFileSizeMb: number;
+      totalFileLimit: number;
+      filesPerFolder: number;
       /** Format: date-time */
       createdAt: string;
       /** Format: date-time */
