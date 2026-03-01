@@ -9,3 +9,4 @@ export * from "./separator";
 export * from "./sheet";
 export * from "./table";
 export * from "./visually-hidden";
+export * from "./data-table";
