@@ -101,8 +101,39 @@ const authenticateUser = async (data: LoginUserInput): Promise<AuthToken> => {
   return AuthTokenSchema.parse({ accessToken });
 };
 
+const verifyEmail = async (token: string) => {
+  const tokenFound = await prisma.token.findFirst({
+    where: {
+      token,
+      expires: {
+        gte: new Date(),
+      },
+      type: "EMAIL_VERIFICATION",
+    },
+    select: {
+      identifier: true,
+    },
+  });
+
+  if (!tokenFound) {
+    throw Error("Invalid or expired email verification token used:");
+  }
+
+  const { identifier } = tokenFound;
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { email: identifier },
+      data: { emailVerified: new Date() },
+    }),
+    prisma.token.delete({
+      where: { token },
+    }),
+  ]);
+};
+
 export const authService = {
   getUserByEmail,
   createUser,
   authenticateUser,
+  verifyEmail,
 };

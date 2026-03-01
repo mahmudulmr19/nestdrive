@@ -13,6 +13,7 @@ export const env = createEnv({
     JWT_SECRET: z.string(),
     RESEND_API_KEY: z.string().startsWith("re_"),
     SERVER_URL: z.url(),
+    FRONTEND_URL: z.url(),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,
