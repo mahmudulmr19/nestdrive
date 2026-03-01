@@ -3,16 +3,25 @@ import {
   AuthTokenSchema,
   type AuthToken,
   type CreateUserInput,
+  type ForgotPasswordInput,
   type LoginUserInput,
+  type ResetPasswordInput,
 } from "@nestdrive/schemas/user";
 import { createId } from "~/utils/create-id";
 import bcrypt from "bcrypt";
 import { ApiError } from "~/utils/errors";
 import { authUtils } from "~/utils/auth";
 import { randomBytes } from "node:crypto";
-import { EMAIL_VERIFICATION_TOKEN_EXPIRY } from "~/utils/constants";
+import {
+  EMAIL_VERIFICATION_TOKEN_EXPIRY,
+  PASSWORD_RESET_TOKEN_EXPIRY,
+} from "~/utils/constants";
 import { logger } from "~/config/logger";
-import { getVerifyEmailTemplate, resend } from "~/utils/resend";
+import {
+  getResetPasswordTemplate,
+  getVerifyEmailTemplate,
+  resend,
+} from "~/utils/resend";
 import { env } from "~/config/env";
 
 const SALT_ROUNDS = 10;
@@ -56,7 +65,6 @@ const createUser = async (data: CreateUserInput): Promise<AuthToken> => {
 
     await resend.emails.send({
       to: data.email,
-      subject: "Verify your email for NestDrive",
       template: getVerifyEmailTemplate(data.name, verification_url),
     });
   } catch (error) {
@@ -131,9 +139,75 @@ const verifyEmail = async (token: string) => {
   ]);
 };
 
+const forgotPassword = async (data: ForgotPasswordInput): Promise<void> => {
+  const user = await getUserByEmail(data.email);
+  if (!user) {
+    throw new ApiError({
+      code: "not_found",
+      message: "No account found with that email address.",
+    });
+  }
+
+  // Invalidate any existing reset tokens for this address
+  await prisma.token.deleteMany({
+    where: { identifier: data.email, type: "PASSWORD_RESET" },
+  });
+
+  const token = randomBytes(32).toString("hex");
+  await prisma.token.create({
+    data: {
+      identifier: data.email,
+      token,
+      expires: new Date(Date.now() + PASSWORD_RESET_TOKEN_EXPIRY),
+      type: "PASSWORD_RESET",
+    },
+  });
+
+  const resetUrl = `${env.FRONTEND_URL}/reset-password?token=${token}`;
+
+  try {
+    await resend.emails.send({
+      to: data.email,
+      template: getResetPasswordTemplate(user.name, resetUrl),
+    });
+  } catch (error) {
+    logger.error("Failed to send password reset email:", error);
+  }
+};
+
+const resetPassword = async (data: ResetPasswordInput): Promise<void> => {
+  const tokenRecord = await prisma.token.findFirst({
+    where: {
+      token: data.token,
+      expires: { gte: new Date() },
+      type: "PASSWORD_RESET",
+    },
+    select: { identifier: true },
+  });
+
+  if (!tokenRecord) {
+    throw new ApiError({
+      code: "unauthorized",
+      message: "Invalid or expired password reset link.",
+    });
+  }
+
+  const passwordHash = await bcrypt.hash(data.password, SALT_ROUNDS);
+
+  await prisma.$transaction([
+    prisma.user.update({
+      where: { email: tokenRecord.identifier },
+      data: { passwordHash },
+    }),
+    prisma.token.delete({ where: { token: data.token } }),
+  ]);
+};
+
 export const authService = {
   getUserByEmail,
   createUser,
   authenticateUser,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 };

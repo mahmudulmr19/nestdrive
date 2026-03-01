@@ -6,17 +6,19 @@ import { Button, Field, FieldError, FieldLabel, Input } from "@nestdrive/ui";
 import { Controller, useForm } from "react-hook-form";
 import { AuthWrapper } from "~/components/auth";
 import { api } from "~/lib/api";
+import { useAuth } from "~/lib/auth";
 import { toast } from "sonner";
 
 export default function SignupPage() {
+  const { signIn } = useAuth();
+
   const { mutate, isPending } = api.useMutation("post", "/v1/auth/register", {
     onError(error) {
       toast.error(error.error.message);
     },
     onSuccess(data) {
-      localStorage.setItem("token", data.accessToken);
+      signIn(data.accessToken);
       toast.success("Account created successfully");
-      window.location.href = "/";
     },
   });
 

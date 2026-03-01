@@ -18,7 +18,7 @@ type User = schemas["User"];
 interface AuthContextValue {
   user: User | undefined;
   isLoading: boolean;
-  signIn: (token: string) => void;
+  signIn: (token: string, redirectTo?: string) => void;
   signOut: () => void;
 }
 
@@ -56,11 +56,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [hasToken, isError]);
 
   const signIn = useCallback(
-    (nextToken: string) => {
+    (nextToken: string, redirectTo?: string) => {
       localStorage.setItem("token", nextToken);
       setToken(nextToken);
       getQueryClient().clear();
-      router.replace("/");
+      router.replace(redirectTo ?? "/");
     },
     [router],
   );

@@ -1,6 +1,8 @@
 import {
   CreateUserSchema,
+  ForgotPasswordSchema,
   LoginUserSchema,
+  ResetPasswordSchema,
   VerifyEmailSchema,
 } from "@nestdrive/schemas/user";
 import type { Request, Response } from "express";
@@ -30,8 +32,24 @@ const verifyEmail = async (req: Request, res: Response) => {
   }
 };
 
+const forgotPassword = async (req: Request, res: Response) => {
+  const body = ForgotPasswordSchema.parse(req.body);
+  await authService.forgotPassword(body);
+  return res
+    .status(200)
+    .json({ message: "If that email exists, a reset link has been sent." });
+};
+
+const resetPassword = async (req: Request, res: Response) => {
+  const body = ResetPasswordSchema.parse(req.body);
+  await authService.resetPassword(body);
+  return res.status(200).json({ message: "Password reset successfully." });
+};
+
 export const authController = {
   loginUser,
   registerUser,
   verifyEmail,
+  forgotPassword,
+  resetPassword,
 };

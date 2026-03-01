@@ -17,7 +17,8 @@ export default function LoginPage() {
       toast.error(error.error.message);
     },
     onSuccess(data) {
-      signIn(data.accessToken);
+      const next = new URLSearchParams(window.location.search).get("next");
+      signIn(data.accessToken, next ?? "/");
       toast.success("Logged in successfully");
     },
   });

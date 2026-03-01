@@ -3,7 +3,9 @@ import { env } from "./env";
 import {
   AuthTokenSchema,
   CreateUserSchema,
+  ForgotPasswordSchema,
   LoginUserSchema,
+  ResetPasswordSchema,
   UserSchema,
 } from "@nestdrive/schemas/user";
 import {
@@ -68,6 +70,31 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           responses: {
             ...openApiErrorResponses,
             200: jsonResponse(AuthTokenSchema, "User logged in successfully"),
+          },
+        },
+      },
+      "/v1/auth/forgot-password": {
+        post: {
+          tags: ["Auth"],
+          summary: "Send a password reset email",
+          requestBody: requestBody(ForgotPasswordSchema, "Email address"),
+          responses: {
+            ...openApiErrorResponses,
+            200: { description: "Reset link sent if email exists" },
+          },
+        },
+      },
+      "/v1/auth/reset-password": {
+        post: {
+          tags: ["Auth"],
+          summary: "Reset password using a token",
+          requestBody: requestBody(
+            ResetPasswordSchema,
+            "Token and new password",
+          ),
+          responses: {
+            ...openApiErrorResponses,
+            200: { description: "Password reset successfully" },
           },
         },
       },

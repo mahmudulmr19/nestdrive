@@ -113,6 +113,108 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/auth/forgot-password": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Send a password reset email */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description Email address */
+      requestBody: {
+        content: {
+          "application/json": {
+            /** Format: email */
+            email: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Reset link sent if email exists */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/auth/reset-password": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Reset password using a token */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description Token and new password */
+      requestBody: {
+        content: {
+          "application/json": {
+            token: string;
+            password: string;
+          };
+        };
+      };
+      responses: {
+        /** @description Password reset successfully */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/users/me": {
     parameters: {
       query?: never;

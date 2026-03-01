@@ -49,6 +49,14 @@ export const ForgotPasswordSchema = CreateUserSchema.pick({
   email: true,
 });
 
+export const ResetPasswordSchema = z.object({
+  token: z.string().min(1, "Reset token is required"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters long")
+    .max(32, "Password must be at most 32 characters long"),
+});
+
 export type CreateUserInput = z.infer<typeof CreateUserSchema>;
 export type LoginUserInput = z.infer<typeof LoginUserSchema>;
 export type AuthToken = z.infer<typeof AuthTokenSchema>;
@@ -57,4 +65,5 @@ export type SendVerificationEmailInput = z.infer<
   typeof SendVerificationEmailSchema
 >;
 export type ForgotPasswordInput = z.infer<typeof ForgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof ResetPasswordSchema>;
 export type User = z.infer<typeof UserSchema>;

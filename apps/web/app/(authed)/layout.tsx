@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "~/lib/auth";
 
 function AuthCheckingScreen() {
@@ -23,12 +23,13 @@ export default function AuthedLayout({
 }) {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!isLoading && !user) {
-      router.replace("/login");
+      router.replace(`/login?next=${encodeURIComponent(pathname)}`);
     }
-  }, [isLoading, router, user]);
+  }, [isLoading, pathname, router, user]);
 
   if (isLoading) {
     return <AuthCheckingScreen />;
