@@ -15,6 +15,11 @@ export const ErrorResponseSchema = z
         example: "The requested resource was not found.",
       }),
     }),
+    requestId: z.string().optional().meta({
+      description:
+        "A unique identifier for the request, useful for debugging and tracing errors in logs.",
+      example: "123e4567-e89b-12d3-a456-426614174000",
+    }),
   })
   .meta({ id: "ErrorResponse" });
 
