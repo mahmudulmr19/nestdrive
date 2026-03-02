@@ -5,10 +5,10 @@ export const SubscriptionSchema = z
   .object({
     id: z.string(),
     userId: z.string(),
-    packageId: z.string(),
+    packageId: z.string().nullable(),
     startedAt: z.iso.datetime(),
     endedAt: z.iso.datetime().nullable(),
-    package: SubscriptionPackageSchema,
+    package: SubscriptionPackageSchema.nullable(),
     createdAt: z.iso.datetime(),
     updatedAt: z.iso.datetime(),
   })

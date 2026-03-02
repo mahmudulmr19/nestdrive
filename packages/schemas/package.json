@@ -6,7 +6,8 @@
     "./user": "./src/user.ts",
     "./subscription-package": "./src/subscription-package.ts",
     "./admin-stats": "./src/admin-stats.ts",
-    "./subscription": "./src/subscription.ts"
+    "./subscription": "./src/subscription.ts",
+    "./folder": "./src/folder.ts"
   },
   "private": true,
   "dependencies": {

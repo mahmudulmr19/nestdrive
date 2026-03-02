@@ -18,6 +18,11 @@ import {
   SubscriptionSchema,
   SubscribeSchema,
 } from "@nestdrive/schemas/subscription";
+import {
+  FolderSchema,
+  CreateFolderSchema,
+  RenameFolderSchema,
+} from "@nestdrive/schemas/folder";
 import { jsonResponse, requestBody } from "~/utils/openapi";
 import {
   openApiErrorResponses,
@@ -56,6 +61,10 @@ export const openApiDocument: ReturnType<typeof createDocument> =
       {
         name: "Subscriptions",
         description: "User subscription management",
+      },
+      {
+        name: "Folders",
+        description: "User folder management",
       },
       {
         name: "Admin",
@@ -175,6 +184,64 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           },
         },
       },
+      "/v1/folders": {
+        get: {
+          tags: ["Folders"],
+          summary: "List all folders for the current user",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(z.array(FolderSchema), "List of user folders"),
+          },
+        },
+        post: {
+          tags: ["Folders"],
+          summary: "Create a new folder",
+          security: [{ token: [] }],
+          requestBody: requestBody(CreateFolderSchema, "Folder data"),
+          responses: {
+            ...openApiErrorResponses,
+            201: jsonResponse(FolderSchema, "Folder created"),
+          },
+        },
+      },
+      "/v1/folders/{id}": {
+        put: {
+          tags: ["Folders"],
+          summary: "Rename a folder",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          requestBody: requestBody(RenameFolderSchema, "New folder name"),
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(FolderSchema, "Folder renamed"),
+          },
+        },
+        delete: {
+          tags: ["Folders"],
+          summary: "Delete a folder",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          responses: {
+            ...openApiErrorResponses,
+            204: { description: "Folder deleted" },
+          },
+        },
+      },
       "/v1/admin/stats": {
         get: {
           tags: ["Admin"],
@@ -289,6 +356,9 @@ export const openApiDocument: ReturnType<typeof createDocument> =
         AdminStatsSchema,
         SubscriptionSchema,
         SubscribeSchema,
+        FolderSchema,
+        CreateFolderSchema,
+        RenameFolderSchema,
       },
       securitySchemes: {
         token: {

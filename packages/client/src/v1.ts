@@ -445,6 +445,166 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/folders": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all folders for the current user */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description List of user folders */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Folder"][];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    /** Create a new folder */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description Folder data */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["CreateFolderInput"];
+        };
+      };
+      responses: {
+        /** @description Folder created */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Folder"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/folders/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** Rename a folder */
+    put: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      /** @description New folder name */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["RenameFolderInput"];
+        };
+      };
+      responses: {
+        /** @description Folder renamed */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Folder"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    post?: never;
+    /** Delete a folder */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Folder deleted */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/admin/stats": {
     parameters: {
       query?: never;
@@ -720,6 +880,13 @@ export interface components {
     SubscribeInput: {
       packageId: string;
     };
+    CreateFolderInput: {
+      name: string;
+      parentId?: string;
+    };
+    RenameFolderInput: {
+      name: string;
+    };
     AuthTokenResponse: {
       accessToken: string;
     };
@@ -749,11 +916,22 @@ export interface components {
     Subscription: {
       id: string;
       userId: string;
-      packageId: string;
+      packageId: string | null;
       /** Format: date-time */
       startedAt: string;
       endedAt: string | null;
-      package: components["schemas"]["SubscriptionPackageOutput"];
+      package: components["schemas"]["SubscriptionPackageOutput"] | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    Folder: {
+      id: string;
+      name: string;
+      userId: string;
+      parentId: string | null;
+      depth: number;
       /** Format: date-time */
       createdAt: string;
       /** Format: date-time */

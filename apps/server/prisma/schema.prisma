@@ -49,12 +49,12 @@ model SubscriptionPackage {
 model UserSubscription {
   id        String    @id @default(cuid())
   userId    String    @map("user_id")
-  packageId String    @map("package_id")
+  packageId String?   @map("package_id")
   startedAt DateTime  @default(now()) @map("started_at")
   endedAt   DateTime? @map("ended_at")
 
-  user    User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  package SubscriptionPackage @relation(fields: [packageId], references: [id], onDelete: Restrict)
+  user    User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  package SubscriptionPackage? @relation(fields: [packageId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
