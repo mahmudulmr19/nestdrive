@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ResetPasswordSchema } from "@nestdrive/schemas/user";
 import { Button, Field, FieldError, FieldLabel, Input } from "@nestdrive/ui";
@@ -10,9 +10,12 @@ import { api } from "~/lib/api";
 import { toast } from "sonner";
 import { ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const [done, setDone] = useState(false);
+  const searchParams = useSearchParams();
+  const tokenFromUrl = searchParams.get("token") ?? "";
 
   const { mutate, isPending } = api.useMutation(
     "post",
@@ -29,15 +32,11 @@ export default function ResetPasswordPage() {
 
   const form = useForm({
     resolver: zodResolver(ResetPasswordSchema),
-    defaultValues: { token: "", password: "" },
+    defaultValues: { token: tokenFromUrl, password: "" },
   });
 
   const onSubmit = form.handleSubmit((values) => {
-    const token =
-      values.token ||
-      new URLSearchParams(window.location.search).get("token") ||
-      "";
-    mutate({ body: { token, password: values.password } });
+    mutate({ body: values });
   });
 
   if (done) {
@@ -97,5 +96,13 @@ export default function ResetPasswordPage() {
         </Button>
       </form>
     </AuthWrapper>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

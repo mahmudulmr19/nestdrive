@@ -23,6 +23,13 @@ import {
   CreateFolderSchema,
   RenameFolderSchema,
 } from "@nestdrive/schemas/folder";
+import {
+  FileSchema,
+  PresignFileSchema,
+  ConfirmFileSchema,
+  PresignResponseSchema,
+  FileUrlResponseSchema,
+} from "@nestdrive/schemas/file";
 import { jsonResponse, requestBody } from "~/utils/openapi";
 import {
   openApiErrorResponses,
@@ -65,6 +72,10 @@ export const openApiDocument: ReturnType<typeof createDocument> =
       {
         name: "Folders",
         description: "User folder management",
+      },
+      {
+        name: "Files",
+        description: "User file management with S3 pre-signed URL uploads",
       },
       {
         name: "Admin",
@@ -242,6 +253,79 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           },
         },
       },
+      "/v1/files/presign": {
+        post: {
+          tags: ["Files"],
+          summary: "Validate limits and get a pre-signed S3 upload URL",
+          security: [{ token: [] }],
+          requestBody: requestBody(PresignFileSchema, "File metadata"),
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(PresignResponseSchema, "Pre-signed upload URL"),
+          },
+        },
+      },
+      "/v1/files/confirm": {
+        post: {
+          tags: ["Files"],
+          summary: "Save file metadata to the database after upload",
+          security: [{ token: [] }],
+          requestBody: requestBody(ConfirmFileSchema, "File metadata to save"),
+          responses: {
+            ...openApiErrorResponses,
+            201: jsonResponse(FileSchema, "File record created"),
+          },
+        },
+      },
+      "/v1/files": {
+        get: {
+          tags: ["Files"],
+          summary: "List all files for the current user",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(z.array(FileSchema), "List of user files"),
+          },
+        },
+      },
+      "/v1/files/{id}/url": {
+        get: {
+          tags: ["Files"],
+          summary: "Get a pre-signed download URL for a file",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(FileUrlResponseSchema, "Pre-signed download URL"),
+          },
+        },
+      },
+      "/v1/files/{id}": {
+        delete: {
+          tags: ["Files"],
+          summary: "Delete a file from S3 and the database",
+          security: [{ token: [] }],
+          parameters: [
+            {
+              name: "id",
+              in: "path",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
+          responses: {
+            ...openApiErrorResponses,
+            204: { description: "File deleted" },
+          },
+        },
+      },
       "/v1/admin/stats": {
         get: {
           tags: ["Admin"],
@@ -359,6 +443,11 @@ export const openApiDocument: ReturnType<typeof createDocument> =
         FolderSchema,
         CreateFolderSchema,
         RenameFolderSchema,
+        FileSchema,
+        PresignFileSchema,
+        ConfirmFileSchema,
+        PresignResponseSchema,
+        FileUrlResponseSchema,
       },
       securitySchemes: {
         token: {

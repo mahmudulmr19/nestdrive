@@ -17,4 +17,5 @@ export const createApiClient = () => {
   return api;
 };
 
-export const api = createOpenAPIReactQuery(createApiClient());
+export const fetchClient = createApiClient();
+export const api = createOpenAPIReactQuery(fetchClient);

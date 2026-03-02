@@ -1,7 +1,13 @@
 import { Button } from "@nestdrive/ui";
 import { Folder, FolderPlus, Upload } from "lucide-react";
 
-export function EmptyState({ onNewFolder }: { onNewFolder: () => void }) {
+export function EmptyState({
+  onNewFolder,
+  onUpload,
+}: {
+  onNewFolder: () => void;
+  onUpload: () => void;
+}) {
   return (
     <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
       <div className="flex size-20 items-center justify-center rounded-2xl bg-neutral-100">
@@ -25,7 +31,7 @@ export function EmptyState({ onNewFolder }: { onNewFolder: () => void }) {
           <FolderPlus className="size-4" />
           New Folder
         </Button>
-        <Button size="sm" className="gap-x-2" disabled>
+        <Button size="sm" className="gap-x-2" onClick={onUpload}>
           <Upload className="size-4" />
           Upload File
         </Button>

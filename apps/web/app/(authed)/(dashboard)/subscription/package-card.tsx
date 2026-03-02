@@ -1,5 +1,11 @@
 import { Button } from "@nestdrive/ui";
-import { CheckCircle2, FileText, Folder, HardDrive, Layers } from "lucide-react";
+import {
+  CheckCircle2,
+  FileText,
+  Folder,
+  HardDrive,
+  Layers,
+} from "lucide-react";
 import type { schemas } from "@nestdrive/client";
 
 type Package = schemas["SubscriptionPackage"];
@@ -40,14 +46,18 @@ export function PackageCard({
         <li className="flex items-center gap-x-2">
           <Folder className="size-3.5 shrink-0 text-neutral-400" />
           <span>
-            <span className="font-medium text-foreground">{pkg.maxFolders}</span>{" "}
+            <span className="font-medium text-foreground">
+              {pkg.maxFolders}
+            </span>{" "}
             max folders
           </span>
         </li>
         <li className="flex items-center gap-x-2">
           <Layers className="size-3.5 shrink-0 text-neutral-400" />
           <span>
-            <span className="font-medium text-foreground">{pkg.maxNestingLevel}</span>{" "}
+            <span className="font-medium text-foreground">
+              {pkg.maxNestingLevel}
+            </span>{" "}
             nesting levels
           </span>
         </li>
@@ -61,21 +71,27 @@ export function PackageCard({
         <li className="flex items-center gap-x-2">
           <HardDrive className="size-3.5 shrink-0 text-neutral-400" />
           <span>
-            <span className="font-medium text-foreground">{pkg.maxFileSizeMb} MB</span>{" "}
+            <span className="font-medium text-foreground">
+              {pkg.maxFileSizeMb} MB
+            </span>{" "}
             max file size
           </span>
         </li>
         <li className="flex items-center gap-x-2">
           <HardDrive className="size-3.5 shrink-0 text-neutral-400" />
           <span>
-            <span className="font-medium text-foreground">{pkg.totalFileLimit}</span>{" "}
+            <span className="font-medium text-foreground">
+              {pkg.totalFileLimit}
+            </span>{" "}
             total files
           </span>
         </li>
         <li className="flex items-center gap-x-2">
           <Folder className="size-3.5 shrink-0 text-neutral-400" />
           <span>
-            <span className="font-medium text-foreground">{pkg.filesPerFolder}</span>{" "}
+            <span className="font-medium text-foreground">
+              {pkg.filesPerFolder}
+            </span>{" "}
             files per folder
           </span>
         </li>

@@ -93,7 +93,6 @@ model File {
   mimeType   String   @map("mime_type")
   sizeMb     Float    @map("size_mb")
   storageKey String   @map("storage_key")
-  url        String
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   folder Folder? @relation(fields: [folderId], references: [id], onDelete: SetNull)

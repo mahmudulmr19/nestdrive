@@ -605,6 +605,243 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/files/presign": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Validate limits and get a pre-signed S3 upload URL */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description File metadata */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["PresignFileInput"];
+        };
+      };
+      responses: {
+        /** @description Pre-signed upload URL */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["PresignResponse"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/files/confirm": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Save file metadata to the database after upload */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description File metadata to save */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["ConfirmFileInput"];
+        };
+      };
+      responses: {
+        /** @description File record created */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["File"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/files": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all files for the current user */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description List of user files */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["File"][];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/files/{id}/url": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get a pre-signed download URL for a file */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Pre-signed download URL */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["FileUrlResponse"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/files/{id}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete a file from S3 and the database */
+    delete: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path: {
+          id: string;
+        };
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description File deleted */
+        204: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content?: never;
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/admin/stats": {
     parameters: {
       query?: never;
@@ -887,6 +1124,47 @@ export interface components {
     RenameFolderInput: {
       name: string;
     };
+    PresignFileInput: {
+      name: string;
+      /** @enum {string} */
+      mimeType:
+        | "image/jpeg"
+        | "image/png"
+        | "image/gif"
+        | "image/webp"
+        | "image/svg+xml"
+        | "video/mp4"
+        | "video/webm"
+        | "video/ogg"
+        | "application/pdf"
+        | "audio/mpeg"
+        | "audio/ogg"
+        | "audio/wav"
+        | "audio/webm";
+      sizeMb: number;
+      folderId?: string;
+    };
+    ConfirmFileInput: {
+      fileKey: string;
+      name: string;
+      /** @enum {string} */
+      mimeType:
+        | "image/jpeg"
+        | "image/png"
+        | "image/gif"
+        | "image/webp"
+        | "image/svg+xml"
+        | "video/mp4"
+        | "video/webm"
+        | "video/ogg"
+        | "application/pdf"
+        | "audio/mpeg"
+        | "audio/ogg"
+        | "audio/wav"
+        | "audio/webm";
+      sizeMb: number;
+      folderId?: string;
+    };
     AuthTokenResponse: {
       accessToken: string;
     };
@@ -936,6 +1214,30 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
+    };
+    File: {
+      id: string;
+      name: string;
+      userId: string;
+      folderId: string | null;
+      /** @enum {string} */
+      fileType: "IMAGE" | "VIDEO" | "PDF" | "AUDIO";
+      mimeType: string;
+      sizeMb: number;
+      storageKey: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    PresignResponse: {
+      /** Format: uri */
+      uploadUrl: string;
+      fileKey: string;
+    };
+    FileUrlResponse: {
+      /** Format: uri */
+      url: string;
     };
     SubscriptionPackageOutput: {
       id: string;
