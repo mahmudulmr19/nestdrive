@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "postinstall": "prisma generate",
-    "dev": "tsx watch ./src/server.ts"
+    "dev": "tsx watch ./src/server.ts",
+    "build": "tsup",
+    "start": "node ./dist/server.js"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -44,6 +46,7 @@
     "@types/node": "^22",
     "@types/pg": "^8.16.0",
     "prisma": "7.4.1",
+    "tsup": "^8.5.1",
     "tsx": "4.21.0"
   }
 }
