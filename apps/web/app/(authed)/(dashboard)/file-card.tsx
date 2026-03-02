@@ -1,28 +1,8 @@
-import {
-  FileImage,
-  FileVideo,
-  FileAudio,
-  FileText,
-  Loader2,
-  Trash2,
-} from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import type { schemas } from "@nestdrive/client";
+import { FILE_COLORS, FILE_ICONS, formatSizeMb } from "./file-utils";
 
 type FileType = schemas["File"];
-
-const FILE_ICONS = {
-  IMAGE: FileImage,
-  VIDEO: FileVideo,
-  AUDIO: FileAudio,
-  PDF: FileText,
-} as const;
-
-const FILE_COLORS = {
-  IMAGE: "text-blue-400",
-  VIDEO: "text-purple-400",
-  AUDIO: "text-green-400",
-  PDF: "text-red-400",
-} as const;
 
 export function FileCard({
   file,
@@ -37,10 +17,6 @@ export function FileCard({
 }) {
   const Icon = FILE_ICONS[file.fileType];
   const color = FILE_COLORS[file.fileType];
-  const sizeLabel =
-    file.sizeMb < 1
-      ? `${(file.sizeMb * 1024).toFixed(0)} KB`
-      : `${file.sizeMb.toFixed(1)} MB`;
 
   return (
     <div className="group relative flex flex-col gap-y-1 rounded-xl border border-neutral-200 bg-white p-4 shadow-xs transition-all hover:border-neutral-300 hover:shadow-sm">
@@ -54,7 +30,9 @@ export function FileCard({
         <span className="max-w-full truncate text-center text-sm font-medium">
           {file.name}
         </span>
-        <span className="text-xs text-muted-foreground">{sizeLabel}</span>
+        <span className="text-xs text-muted-foreground">
+          {formatSizeMb(file.sizeMb)}
+        </span>
       </button>
 
       {!isDeleting && (

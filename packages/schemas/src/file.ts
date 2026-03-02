@@ -65,3 +65,22 @@ export const FileUrlResponseSchema = z
 
 export type PresignFileInput = z.infer<typeof PresignFileSchema>;
 export type ConfirmFileInput = z.infer<typeof ConfirmFileSchema>;
+
+export type FileType = "IMAGE" | "VIDEO" | "PDF" | "AUDIO";
+
+/** Single source of truth: maps every supported MIME type to its FileType category. */
+export const MIME_TO_FILE_TYPE: Record<string, FileType> = {
+  "image/jpeg": "IMAGE",
+  "image/png": "IMAGE",
+  "image/gif": "IMAGE",
+  "image/webp": "IMAGE",
+  "image/svg+xml": "IMAGE",
+  "video/mp4": "VIDEO",
+  "video/webm": "VIDEO",
+  "video/ogg": "VIDEO",
+  "application/pdf": "PDF",
+  "audio/mpeg": "AUDIO",
+  "audio/ogg": "AUDIO",
+  "audio/wav": "AUDIO",
+  "audio/webm": "AUDIO",
+};

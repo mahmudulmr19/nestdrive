@@ -170,9 +170,7 @@ export default function DashboardPage() {
                 key={file.id}
                 file={file}
                 onDownload={handleDownload}
-                onDelete={(f) =>
-                  deleteFile({ params: { path: { id: f.id } } })
-                }
+                onDelete={(f) => deleteFile({ params: { path: { id: f.id } } })}
                 isDeleting={deletingFileId === file.id}
               />
             ))}

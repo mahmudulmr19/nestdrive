@@ -8,55 +8,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@nestdrive/ui";
-import {
-  CloudUpload,
-  FileAudio,
-  FileImage,
-  FileText,
-  FileVideo,
-  X,
-} from "lucide-react";
+import { CloudUpload, X } from "lucide-react";
 import { api } from "~/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import type { PresignFileInput } from "@nestdrive/schemas/file";
+import {
+  MIME_TO_FILE_TYPE,
+  type PresignFileInput,
+} from "@nestdrive/schemas/file";
+import { FILE_COLORS, FILE_ICONS, formatSizeBytes } from "./file-utils";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
-
-const MIME_TO_TYPE: Record<string, "IMAGE" | "VIDEO" | "PDF" | "AUDIO"> = {
-  "image/jpeg": "IMAGE",
-  "image/png": "IMAGE",
-  "image/gif": "IMAGE",
-  "image/webp": "IMAGE",
-  "image/svg+xml": "IMAGE",
-  "video/mp4": "VIDEO",
-  "video/webm": "VIDEO",
-  "video/ogg": "VIDEO",
-  "application/pdf": "PDF",
-  "audio/mpeg": "AUDIO",
-  "audio/ogg": "AUDIO",
-  "audio/wav": "AUDIO",
-  "audio/webm": "AUDIO",
-};
-
-const FILE_ICONS = {
-  IMAGE: FileImage,
-  VIDEO: FileVideo,
-  AUDIO: FileAudio,
-  PDF: FileText,
-} as const;
-
-const FILE_COLORS = {
-  IMAGE: "text-blue-400",
-  VIDEO: "text-purple-400",
-  AUDIO: "text-green-400",
-  PDF: "text-red-400",
-} as const;
-
-function formatSize(bytes: number) {
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
 
 function uploadWithProgress(
   url: string,
@@ -68,7 +30,8 @@ function uploadWithProgress(
     xhr.open("PUT", url);
     xhr.setRequestHeader("Content-Type", file.type);
     xhr.upload.onprogress = (e) => {
-      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+      if (e.lengthComputable)
+        onProgress(Math.round((e.loaded / e.total) * 100));
     };
     xhr.onload = () =>
       xhr.status >= 200 && xhr.status < 300
@@ -98,10 +61,16 @@ export function UploadDialog({
   const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
-  const { mutateAsync: presignFile } = api.useMutation("post", "/v1/files/presign");
-  const { mutateAsync: confirmFile } = api.useMutation("post", "/v1/files/confirm");
+  const { mutateAsync: presignFile } = api.useMutation(
+    "post",
+    "/v1/files/presign",
+  );
+  const { mutateAsync: confirmFile } = api.useMutation(
+    "post",
+    "/v1/files/confirm",
+  );
 
-  const fileType = file ? MIME_TO_TYPE[file.type] : undefined;
+  const fileType = file ? MIME_TO_FILE_TYPE[file.type] : undefined;
   const FileIcon = fileType ? FILE_ICONS[fileType] : null;
   const iconColor = fileType ? FILE_COLORS[fileType] : "";
 
@@ -180,11 +149,13 @@ export function UploadDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={(o) => { if (!o) handleClose(); }}>
-      <DialogContent
-        className="p-6"
-        showCloseButton={!isUploading}
-      >
+    <Dialog
+      open={open}
+      onOpenChange={(o) => {
+        if (!o) handleClose();
+      }}
+    >
+      <DialogContent className="p-6" showCloseButton={!isUploading}>
         <DialogHeader>
           <DialogTitle>Upload File</DialogTitle>
         </DialogHeader>
@@ -232,7 +203,7 @@ export function UploadDialog({
                   {file.name}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {formatSize(file.size)}
+                  {formatSizeBytes(file.size)}
                   {fileType && ` · ${fileType}`}
                 </p>
               </div>
@@ -252,15 +223,15 @@ export function UploadDialog({
             <div className="flex flex-col gap-y-3">
               <div className="flex items-center gap-x-3 rounded-xl border border-neutral-200 bg-neutral-50 p-4">
                 {FileIcon && (
-                  <FileIcon className={`size-10 shrink-0 ${iconColor} opacity-60`} />
+                  <FileIcon
+                    className={`size-10 shrink-0 ${iconColor} opacity-60`}
+                  />
                 )}
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-neutral-800">
                     {file?.name}
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    Uploading…
-                  </p>
+                  <p className="text-xs text-muted-foreground">Uploading…</p>
                 </div>
                 <span className="text-sm font-semibold tabular-nums text-neutral-600">
                   {progress}%

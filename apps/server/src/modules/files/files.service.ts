@@ -6,27 +6,11 @@ import {
   generatePresignedPutUrl,
   deleteS3Object,
 } from "~/utils/s3";
-import type {
-  ConfirmFileInput,
-  PresignFileInput,
+import {
+  MIME_TO_FILE_TYPE,
+  type ConfirmFileInput,
+  type PresignFileInput,
 } from "@nestdrive/schemas/file";
-
-/** Maps MIME types to the FileType enum stored in the DB. */
-const MIME_TO_FILE_TYPE: Record<string, "IMAGE" | "VIDEO" | "PDF" | "AUDIO"> = {
-  "image/jpeg": "IMAGE",
-  "image/png": "IMAGE",
-  "image/gif": "IMAGE",
-  "image/webp": "IMAGE",
-  "image/svg+xml": "IMAGE",
-  "video/mp4": "VIDEO",
-  "video/webm": "VIDEO",
-  "video/ogg": "VIDEO",
-  "application/pdf": "PDF",
-  "audio/mpeg": "AUDIO",
-  "audio/ogg": "AUDIO",
-  "audio/wav": "AUDIO",
-  "audio/webm": "AUDIO",
-};
 
 const getActivePackage = async (userId: string) => {
   const sub = await prisma.userSubscription.findFirst({
