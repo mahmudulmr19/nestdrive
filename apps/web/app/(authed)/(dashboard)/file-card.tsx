@@ -6,12 +6,12 @@ type FileType = schemas["File"];
 
 export function FileCard({
   file,
-  onDownload,
+  onPreview,
   onDelete,
   isDeleting,
 }: {
   file: FileType;
-  onDownload: (f: FileType) => void;
+  onPreview: (f: FileType) => void;
   onDelete: (f: FileType) => void;
   isDeleting?: boolean;
 }) {
@@ -23,8 +23,8 @@ export function FileCard({
       <button
         type="button"
         className="flex w-full flex-col items-center gap-y-2"
-        onClick={() => onDownload(file)}
-        title="Preview / Download"
+        onClick={() => onPreview(file)}
+        title="Preview"
       >
         <Icon className={`size-10 ${color}`} />
         <span className="max-w-full truncate text-center text-sm font-medium">

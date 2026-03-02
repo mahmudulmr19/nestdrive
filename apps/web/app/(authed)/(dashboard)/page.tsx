@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@nestdrive/ui";
 import { FolderPlus, Upload } from "lucide-react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { api, fetchClient } from "~/lib/api";
+import { api } from "~/lib/api";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Breadcrumbs } from "./breadcrumbs";
@@ -14,6 +14,7 @@ import { EmptyState } from "./empty-state";
 import { CreateFolderSheet } from "./create-folder-sheet";
 import { RenameFolderSheet } from "./rename-folder-sheet";
 import { UploadDialog } from "./upload-dialog";
+import { FilePreviewDialog } from "./file-preview-dialog";
 import type { schemas } from "@nestdrive/client";
 
 type FolderType = schemas["Folder"];
@@ -28,6 +29,7 @@ export default function DashboardPage() {
   const [createOpen, setCreateOpen] = useState(false);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [renamingFolder, setRenamingFolder] = useState<FolderType | null>(null);
+  const [previewFile, setPreviewFile] = useState<FileType | null>(null);
 
   const { data: allFolders = [], isLoading: isFoldersLoading } = api.useQuery(
     "get",
@@ -41,48 +43,77 @@ export default function DashboardPage() {
 
   const isLoading = isFoldersLoading || isFilesLoading;
 
-  const {
-    mutate: deleteFolder,
-    isPending: isDeletingFolder,
-    variables: deleteFolderVars,
-  } = api.useMutation("delete", "/v1/folders/{id}", {
-    onSuccess(_data, vars) {
-      queryClient.invalidateQueries({ queryKey: ["get", "/v1/folders"] });
-      toast.success("Folder deleted");
-      const deletedId = vars.params.path.id;
-      if (folderId === deletedId) {
-        const deleted = allFolders.find((f) => f.id === deletedId);
-        router.replace(
-          deleted?.parentId ? `/?folderId=${deleted.parentId}` : "/",
-        );
-      }
-    },
-    onError(err) {
-      toast.error(err.error.message);
-    },
-  });
+  const [deletingFolderIds, setDeletingFolderIds] = useState<Set<string>>(
+    new Set(),
+  );
 
-  const {
-    mutate: deleteFile,
-    isPending: isDeletingFile,
-    variables: deleteFileVars,
-  } = api.useMutation("delete", "/v1/files/{id}", {
-    onSuccess() {
+  const { mutate: deleteFolder } = api.useMutation(
+    "delete",
+    "/v1/folders/{id}",
+    {
+      onSuccess(_data, vars) {
+        const id = vars.params.path.id;
+        setDeletingFolderIds((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+        queryClient.invalidateQueries({ queryKey: ["get", "/v1/folders"] });
+        toast.success("Folder deleted");
+        if (folderId === id) {
+          const deleted = allFolders.find((f) => f.id === id);
+          router.replace(
+            deleted?.parentId ? `/?folderId=${deleted.parentId}` : "/",
+          );
+        }
+      },
+      onError(err, vars) {
+        const id = vars.params.path.id;
+        setDeletingFolderIds((prev) => {
+          const next = new Set(prev);
+          next.delete(id);
+          return next;
+        });
+        toast.error(err.error.message);
+      },
+    },
+  );
+
+  const handleDeleteFolder = (f: FolderType) => {
+    setDeletingFolderIds((prev) => new Set(prev).add(f.id));
+    deleteFolder({ params: { path: { id: f.id } } });
+  };
+
+  const [deletingFileIds, setDeletingFileIds] = useState<Set<string>>(
+    new Set(),
+  );
+
+  const { mutate: deleteFile } = api.useMutation("delete", "/v1/files/{id}", {
+    onSuccess(_data, vars) {
+      const id = vars.params.path.id;
+      setDeletingFileIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
       queryClient.invalidateQueries({ queryKey: ["get", "/v1/files"] });
       toast.success("File deleted");
     },
-    onError(err) {
+    onError(err, vars) {
+      const id = vars.params.path.id;
+      setDeletingFileIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
       toast.error(err.error.message);
     },
   });
 
-  const deletingFolderId = isDeletingFolder
-    ? deleteFolderVars?.params?.path?.id
-    : undefined;
-
-  const deletingFileId = isDeletingFile
-    ? deleteFileVars?.params?.path?.id
-    : undefined;
+  const handleDeleteFile = (f: FileType) => {
+    setDeletingFileIds((prev) => new Set(prev).add(f.id));
+    deleteFile({ params: { path: { id: f.id } } });
+  };
 
   // Redirect to root if the folderId in the URL doesn't belong to this user
   useEffect(() => {
@@ -98,17 +129,6 @@ export default function DashboardPage() {
   const childFolders = allFolders.filter((f) => f.parentId === folderId);
   const currentFiles = allFiles.filter((f) => f.folderId === folderId);
   const isEmpty = childFolders.length === 0 && currentFiles.length === 0;
-
-  const handleDownload = async (file: FileType) => {
-    const { data, error } = await fetchClient.GET("/v1/files/{id}/url", {
-      params: { path: { id: file.id } },
-    });
-    if (error) {
-      toast.error("Failed to get download URL");
-      return;
-    }
-    if (data?.url) window.open(data.url, "_blank");
-  };
 
   return (
     <div className="flex h-full flex-col">
@@ -159,19 +179,17 @@ export default function DashboardPage() {
                 key={folder.id}
                 folder={folder}
                 onRename={setRenamingFolder}
-                onDelete={(f) =>
-                  deleteFolder({ params: { path: { id: f.id } } })
-                }
-                isDeleting={deletingFolderId === folder.id}
+                onDelete={handleDeleteFolder}
+                isDeleting={deletingFolderIds.has(folder.id)}
               />
             ))}
             {currentFiles.map((file) => (
               <FileCard
                 key={file.id}
                 file={file}
-                onDownload={handleDownload}
-                onDelete={(f) => deleteFile({ params: { path: { id: f.id } } })}
-                isDeleting={deletingFileId === file.id}
+                onPreview={setPreviewFile}
+                onDelete={handleDeleteFile}
+                isDeleting={deletingFileIds.has(file.id)}
               />
             ))}
           </div>
@@ -191,6 +209,10 @@ export default function DashboardPage() {
         open={uploadOpen}
         onOpenChange={setUploadOpen}
         folderId={folderId}
+      />
+      <FilePreviewDialog
+        file={previewFile}
+        onClose={() => setPreviewFile(null)}
       />
     </div>
   );
