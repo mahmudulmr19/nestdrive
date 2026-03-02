@@ -260,6 +260,191 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/v1/packages": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** List all available subscription packages */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description List of subscription packages */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["SubscriptionPackageOutput"][];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/subscriptions/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get current user active subscription */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Active subscription or null */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Subscription"] | null;
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/subscriptions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** Subscribe to or switch subscription package */
+    post: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      /** @description Package to subscribe to */
+      requestBody: {
+        content: {
+          "application/json": components["schemas"]["SubscribeInput"];
+        };
+      };
+      responses: {
+        /** @description Subscription created */
+        201: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Subscription"];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/subscriptions/history": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Get subscription history */
+    get: {
+      parameters: {
+        query?: never;
+        header?: never;
+        path?: never;
+        cookie?: never;
+      };
+      requestBody?: never;
+      responses: {
+        /** @description Subscription history */
+        200: {
+          headers: {
+            [name: string]: unknown;
+          };
+          content: {
+            "application/json": components["schemas"]["Subscription"][];
+          };
+        };
+        400: components["responses"]["400"];
+        401: components["responses"]["401"];
+        403: components["responses"]["403"];
+        404: components["responses"]["404"];
+        409: components["responses"]["409"];
+        410: components["responses"]["410"];
+        422: components["responses"]["422"];
+        429: components["responses"]["429"];
+        500: components["responses"]["500"];
+      };
+    };
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/v1/admin/stats": {
     parameters: {
       query?: never;
@@ -328,7 +513,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["SubscriptionPackage"][];
+            "application/json": components["schemas"]["SubscriptionPackageOutput"][];
           };
         };
         400: components["responses"]["400"];
@@ -364,7 +549,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["SubscriptionPackage"];
+            "application/json": components["schemas"]["SubscriptionPackageOutput"];
           };
         };
         400: components["responses"]["400"];
@@ -409,7 +594,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["SubscriptionPackage"];
+            "application/json": components["schemas"]["SubscriptionPackageOutput"];
           };
         };
         400: components["responses"]["400"];
@@ -446,7 +631,7 @@ export interface paths {
             [name: string]: unknown;
           };
           content: {
-            "application/json": components["schemas"]["SubscriptionPackage"];
+            "application/json": components["schemas"]["SubscriptionPackageOutput"];
           };
         };
         400: components["responses"]["400"];
@@ -500,6 +685,20 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    SubscriptionPackage: {
+      id: string;
+      name: string;
+      maxFolders: number;
+      maxNestingLevel: number;
+      allowedFileTypes: ("IMAGE" | "VIDEO" | "PDF" | "AUDIO")[];
+      maxFileSizeMb: number;
+      totalFileLimit: number;
+      filesPerFolder: number;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
     CreateSubscriptionPackage: {
       name: string;
       maxFolders: number;
@@ -518,6 +717,9 @@ export interface components {
       totalFileLimit?: number;
       filesPerFolder?: number;
     };
+    SubscribeInput: {
+      packageId: string;
+    };
     AuthTokenResponse: {
       accessToken: string;
     };
@@ -535,7 +737,29 @@ export interface components {
       /** Format: date-time */
       updatedAt: string;
     };
-    SubscriptionPackage: {
+    AdminStats: {
+      totalUsers: number;
+      verifiedUsers: number;
+      totalPackages: number;
+      dailySignups: {
+        date: string;
+        count: number;
+      }[];
+    };
+    Subscription: {
+      id: string;
+      userId: string;
+      packageId: string;
+      /** Format: date-time */
+      startedAt: string;
+      endedAt: string | null;
+      package: components["schemas"]["SubscriptionPackageOutput"];
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    SubscriptionPackageOutput: {
       id: string;
       name: string;
       maxFolders: number;
@@ -548,15 +772,6 @@ export interface components {
       createdAt: string;
       /** Format: date-time */
       updatedAt: string;
-    };
-    AdminStats: {
-      totalUsers: number;
-      verifiedUsers: number;
-      totalPackages: number;
-      dailySignups: {
-        date: string;
-        count: number;
-      }[];
     };
   };
   responses: {

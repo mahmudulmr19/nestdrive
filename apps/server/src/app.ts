@@ -14,6 +14,8 @@ import { getCorsOrigin } from "~/utils/cors";
 import { authRoutes } from "./modules/auth/auth.routes";
 import { usersRoutes } from "./modules/users/users.routes";
 import { adminRoutes } from "./modules/admin/admin.routes";
+import { packagesRoutes } from "./modules/packages/packages.routes";
+import { subscriptionsRoutes } from "./modules/subscriptions/subscriptions.routes";
 import { openApiDocument } from "./config/openapi";
 import { apiReference } from "@scalar/express-api-reference";
 
@@ -59,6 +61,8 @@ export async function createApp(): Promise<express.Application> {
   app.use("/v1/auth", authRoutes);
   app.use("/v1/users", usersRoutes);
   app.use("/v1/admin", adminRoutes);
+  app.use("/v1/packages", packagesRoutes);
+  app.use("/v1/subscriptions", subscriptionsRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -26,11 +26,7 @@ export function DashboardLayout({ children }: PropsWithChildren) {
       <div className="fixed top-0 right-0 left-0 z-50 flex h-16 items-center justify-between border-b bg-white px-4 md:hidden">
         <Logo />
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setIsOpen(true)}
-          >
+          <Button variant="outline" size="icon" onClick={() => setIsOpen(true)}>
             <Menu className="size-5" />
             <span className="sr-only">Open menu</span>
           </Button>

@@ -5,7 +5,8 @@
   "exports": {
     "./user": "./src/user.ts",
     "./subscription-package": "./src/subscription-package.ts",
-    "./admin-stats": "./src/admin-stats.ts"
+    "./admin-stats": "./src/admin-stats.ts",
+    "./subscription": "./src/subscription.ts"
   },
   "private": true,
   "dependencies": {

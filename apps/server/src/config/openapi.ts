@@ -14,6 +14,10 @@ import {
   UpdateSubscriptionPackageSchema,
 } from "@nestdrive/schemas/subscription-package";
 import { AdminStatsSchema } from "@nestdrive/schemas/admin-stats";
+import {
+  SubscriptionSchema,
+  SubscribeSchema,
+} from "@nestdrive/schemas/subscription";
 import { jsonResponse, requestBody } from "~/utils/openapi";
 import {
   openApiErrorResponses,
@@ -44,6 +48,14 @@ export const openApiDocument: ReturnType<typeof createDocument> =
       {
         name: "Users",
         description: "Endpoints related to user management",
+      },
+      {
+        name: "Packages",
+        description: "Public-facing subscription package listing",
+      },
+      {
+        name: "Subscriptions",
+        description: "User subscription management",
       },
       {
         name: "Admin",
@@ -106,6 +118,60 @@ export const openApiDocument: ReturnType<typeof createDocument> =
           responses: {
             ...openApiErrorResponses,
             200: jsonResponse(UserSchema, "Current user data"),
+          },
+        },
+      },
+      "/v1/packages": {
+        get: {
+          tags: ["Packages"],
+          summary: "List all available subscription packages",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(
+              z.array(SubscriptionPackageSchema),
+              "List of subscription packages",
+            ),
+          },
+        },
+      },
+      "/v1/subscriptions/me": {
+        get: {
+          tags: ["Subscriptions"],
+          summary: "Get current user active subscription",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(
+              SubscriptionSchema.nullable(),
+              "Active subscription or null",
+            ),
+          },
+        },
+      },
+      "/v1/subscriptions": {
+        post: {
+          tags: ["Subscriptions"],
+          summary: "Subscribe to or switch subscription package",
+          security: [{ token: [] }],
+          requestBody: requestBody(SubscribeSchema, "Package to subscribe to"),
+          responses: {
+            ...openApiErrorResponses,
+            201: jsonResponse(SubscriptionSchema, "Subscription created"),
+          },
+        },
+      },
+      "/v1/subscriptions/history": {
+        get: {
+          tags: ["Subscriptions"],
+          summary: "Get subscription history",
+          security: [{ token: [] }],
+          responses: {
+            ...openApiErrorResponses,
+            200: jsonResponse(
+              z.array(SubscriptionSchema),
+              "Subscription history",
+            ),
           },
         },
       },
@@ -221,6 +287,8 @@ export const openApiDocument: ReturnType<typeof createDocument> =
         CreateSubscriptionPackageSchema,
         UpdateSubscriptionPackageSchema,
         AdminStatsSchema,
+        SubscriptionSchema,
+        SubscribeSchema,
       },
       securitySchemes: {
         token: {

@@ -75,7 +75,6 @@ export function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
             Subscription
           </Link>
         </Button>
-
       </div>
 
       {/* Bottom: user info + sign out */}
