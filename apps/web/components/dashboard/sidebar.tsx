@@ -50,11 +50,6 @@ export function SidebarContent({ onLinkClick }: { onLinkClick?: () => void }) {
           </Link>
         </Button>
 
-        {/* Folder tree will be inserted here when API is ready */}
-        <div className="mt-1 pl-4 text-sm text-muted-foreground">
-          {/* dynamic folder tree goes here */}
-        </div>
-
         <Separator className="my-2" />
 
         <p className="mb-1 px-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
