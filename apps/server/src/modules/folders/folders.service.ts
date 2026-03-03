@@ -1,6 +1,7 @@
 import { prisma } from "~/db";
 import { ApiError } from "~/utils/errors";
 import { createId } from "~/utils/create-id";
+import { deleteS3Object } from "~/utils/s3";
 import type {
   CreateFolderInput,
   RenameFolderInput,
@@ -82,11 +83,28 @@ const renameFolder = async (
   return prisma.folder.update({ where: { id }, data: { name: data.name } });
 };
 
+const collectDescendantFolderIds = async (folderId: string): Promise<string[]> => {
+  const children = await prisma.folder.findMany({
+    where: { parentId: folderId },
+    select: { id: true },
+  });
+  const childIds = await Promise.all(children.map((c) => collectDescendantFolderIds(c.id)));
+  return [folderId, ...childIds.flat()];
+};
+
 const deleteFolder = async (userId: string, id: string) => {
   const folder = await prisma.folder.findFirst({ where: { id, userId } });
   if (!folder) {
     throw new ApiError({ code: "not_found", message: "Folder not found." });
   }
+
+  const folderIds = await collectDescendantFolderIds(id);
+  const files = await prisma.file.findMany({
+    where: { folderId: { in: folderIds } },
+    select: { storageKey: true },
+  });
+
+  await Promise.all(files.map((f) => deleteS3Object(f.storageKey)));
   await prisma.folder.delete({ where: { id } });
 };
 

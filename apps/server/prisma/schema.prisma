@@ -95,7 +95,7 @@ model File {
   storageKey String   @map("storage_key")
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  folder Folder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+  folder Folder? @relation(fields: [folderId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
