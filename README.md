@@ -115,7 +115,7 @@ NEXT_PUBLIC_API_URL=http://localhost:8080
 
 ```bash
 cd apps/server
-pnpm prisma migrate deploy
+pnpm prisma db push
 pnpm prisma db seed
 ```
 
