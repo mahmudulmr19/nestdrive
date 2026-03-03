@@ -1,6 +1,4 @@
 import { CircleCheck, CircleX } from "lucide-react";
-import { Button } from "@nestdrive/ui";
-import Link from "next/link";
 
 export default async function EmailVerificationPage({
   searchParams,
@@ -29,14 +27,10 @@ export default async function EmailVerificationPage({
           </h1>
           <p className="text-muted-foreground text-sm">
             {success
-              ? "Your email has been confirmed. You can now sign in to your account."
+              ? "Your email has been confirmed. You can close this window"
               : "The link may have expired or already been used."}
           </p>
         </div>
-
-        <Button asChild className="h-10 w-full">
-          <Link href="/login">{success ? "Sign in" : "Back to sign in"}</Link>
-        </Button>
       </div>
     </div>
   );
