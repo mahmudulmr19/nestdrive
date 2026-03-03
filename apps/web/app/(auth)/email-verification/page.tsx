@@ -1,13 +1,14 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
 import { CircleCheck, CircleX } from "lucide-react";
 import { Button } from "@nestdrive/ui";
 import Link from "next/link";
 
-export default function EmailVerificationPage() {
-  const searchParams = useSearchParams();
-  const success = searchParams.get("status") === "success";
+export default async function EmailVerificationPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status } = await searchParams;
+  const success = status === "success";
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
